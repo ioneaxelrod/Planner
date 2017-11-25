@@ -17,13 +17,16 @@ public class DatabaseInteraction {
 
     private static final DatabaseInteraction singleton = new DatabaseInteraction();
     private static Connection myConn;
-    private static final String DB_URL = "jdbc:mysql://localhost:330/foo";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/foo";
     private static final String USER_NAME = "root";
+//    private static final String PASSWORD = FileParser.getPassword();
+
 
 
     private DatabaseInteraction() {
         try {
-            myConn = DriverManager.getConnection(DB_URL, USER_NAME, FileParser.getPassword());
+            final String PASSWORD = FileParser.getPassword();
+            myConn = DriverManager.getConnection(DB_URL, USER_NAME, PASSWORD);
         } catch (SQLException exc) {
             exc.printStackTrace();
         }
