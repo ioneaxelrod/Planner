@@ -255,10 +255,8 @@ public class DatabaseInteraction {
 
         try {
             final String query = "select * from tasks where id = ? ;";
-
             final PreparedStatement preparedStmt = myConn.prepareStatement(query);
             preparedStmt.setInt(1, id);
-
             final ResultSet resultSet = preparedStmt.executeQuery();
 
             while (resultSet.next()) {
@@ -287,8 +285,8 @@ public class DatabaseInteraction {
 
             final PreparedStatement statement = myConn.prepareStatement(query);
             statement.setInt(1, projectId);
-
             final ResultSet resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
                 String title = resultSet.getString("title");
                 String description = resultSet.getString("description");
@@ -312,7 +310,6 @@ public class DatabaseInteraction {
         try {
 
             final PreparedStatement statement = myConn.prepareStatement(query);
-
             final ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
