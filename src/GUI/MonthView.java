@@ -50,6 +50,23 @@ public class MonthView extends JFrame {
         setLayout(new BorderLayout());
 
         //Top Setup
+        createTopPanel();
+        add(weekNamePanels, BorderLayout.NORTH);
+
+        //Center Setup
+        monthPanels.setLayout(new GridLayout(6, 7));
+        fillDaysInMonth();
+        add(monthPanels, BorderLayout.CENTER);
+
+        //Bottom Setup
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(e -> new ProjectEditorView());
+        add(addButton, BorderLayout.SOUTH);
+
+        setVisible(true);
+    }
+
+    private void createTopPanel() {
         weekNamePanels.setLayout(daysOfWeekLayout);
         weekNamePanels.add(sun);
         weekNamePanels.add(mon);
@@ -58,26 +75,12 @@ public class MonthView extends JFrame {
         weekNamePanels.add(thur);
         weekNamePanels.add(fri);
         weekNamePanels.add(sat);
-
-        //Center Setup
-        monthPanels.setLayout(new GridLayout(6, 7));
-        fillDaysInMonth();
-        add(monthPanels, BorderLayout.CENTER);
-        add(weekNamePanels, BorderLayout.NORTH);
-
-        JButton addButton = new JButton("Add");
-
-        add(addButton, BorderLayout.SOUTH);
-
-        setVisible(true);
     }
+
 
     private ArrayList<Project> projectsToFillDays() {
         return ProjectDatabaseInteraction.retrieveAllProjectsInDatabase();
     }
-
-
-
 
     private ArrayList<Project> findProjectWhoseDeadlineIsThisDay(int dayOfMonth) {
         ArrayList<Project> projectsWithDeadline = new ArrayList<>();
@@ -103,14 +106,14 @@ public class MonthView extends JFrame {
 
                     String dateHeader = dayOfMonth + "\n";
 
-                    JButton DateButton = new JButton(dateHeader);
+                    JButton dayButton = new JButton(dateHeader);
 
-                    DateButton.addActionListener(e -> {
+                    dayButton.addActionListener(e -> {
                         final ArrayList<Project> testAttempt = projectsToFillDays();
                         final DayView b = new DayView(testAttempt);
                     });
 
-                    monthPanels.add(DateButton);
+                    monthPanels.add(dayButton);
                 }
             }
         }

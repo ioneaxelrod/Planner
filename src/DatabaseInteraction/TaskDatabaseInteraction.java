@@ -30,6 +30,11 @@ public class TaskDatabaseInteraction {
         return deleteRow;
     }
 
+    public static boolean deleteAllProjectTasksFromDatabase(final int projectId) {
+        final boolean deleteRows = DatabaseInteraction.deleteAllTasksForProjectFromDatabase(projectId);
+        return deleteRows;
+    }
+
     public static Task retrieveTaskFromDatabase(final int id) {
         return DatabaseInteraction.retrieveTaskFromDatabase(id);
     }

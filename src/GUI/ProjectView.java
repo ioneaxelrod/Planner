@@ -1,6 +1,9 @@
 package GUI;
 
+import DatabaseInteraction.ProjectDatabaseInteraction;
+import DatabaseInteraction.TaskDatabaseInteraction;
 import Model.Project;
+import Model.Task;
 
 import java.awt.BorderLayout;
 import java.time.LocalDate;
@@ -12,6 +15,7 @@ public class ProjectView extends JFrame
 
         final private JPanel projectTitlePanel;
         final private JPanel projectPanel;
+        final private JPanel bottomPanel;
         private static Project currentProject;
 
         ProjectView(Project project)
@@ -46,12 +50,27 @@ public class ProjectView extends JFrame
 
             projectPanel.add(projectList);
 
+            bottomPanel = new JPanel();
+            add(bottomPanel, BorderLayout.SOUTH);
+
+            final JButton deleteButton = new JButton("Delete");
+            //TODO: make this functional
+//            deleteButton.addActionListener(e -> deleteProject(currentProject));
+            bottomPanel.add(deleteButton);
+
         }
 
         //TODO: move this somehwere else
 
         public static String formatLocalDate(LocalDate date) {
             return date.getMonthValue() + "-" + date.getDayOfMonth() + "-" + date.getYear();
+        }
+
+        private void deleteProject(Project project) {
+            for (Task task: project.getSteps()) {
+                TaskDatabaseInteraction.deleteAllProjectTasksFromDatabase(project.getId());
+            }
+            ProjectDatabaseInteraction.deleteProjectFromDatabase(project);
         }
 
     }

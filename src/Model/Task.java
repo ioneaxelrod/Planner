@@ -26,7 +26,27 @@ public class Task {
     // Constructors
     //================================================================================
 
+    public Task (final String title, final int projectId) {
+        if (title == ""){
+            try {
+                throw new Exception("Title is blank");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        this.title = title;
+        this.projectId = projectId;
+        this.id = TaskDatabaseInteraction.incrementAndGet();
+    }
+
     public Task(final String title, final String description, final int projectId) {
+        if (title == ""){
+            try {
+                throw new Exception("Title is blank");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         this.title = title;
         this.description = description;
         this.projectId = projectId;

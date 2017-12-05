@@ -190,7 +190,6 @@ public class Project {
         this.tasks = tasks;
     }
 
-
     public void completeStep(Task task) {
         task.isFinished = true;
         if (checkIfProjectIsComplete()) {
