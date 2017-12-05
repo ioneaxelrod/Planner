@@ -50,15 +50,6 @@ public class DayView extends JFrame {
 
         addProjectButtons();
 
-
-
-
-
-
-
-
-
-
         setVisible(true);
 
     }
@@ -71,8 +62,6 @@ public class DayView extends JFrame {
             projectButton.addActionListener(e -> {
                 final ProjectView b = new ProjectView(project);
             });
-
-
         }
     }
 

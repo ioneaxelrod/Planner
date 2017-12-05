@@ -3,6 +3,7 @@ package Model;
 
 
 import DatabaseInteraction.ProjectDatabaseInteraction;
+import Engine.ConsoleUI;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -148,14 +149,28 @@ public class Project {
         return answer;
     }
 
-    public void printProject() {
+    public String printProject() {
         String answer = "Title: " + title + "\n";
         answer = answer + "Description: " + description + "\n";
         answer = answer + "Deadline: " + deadline + "\n";
         if (tasks.isEmpty()) {
-            return;
+            return answer;
         }
         answer = answer + printSteps();
+        return answer;
+    }
+
+    public ArrayList<String> parseProjectForJList() {
+        ArrayList<String> newList = new ArrayList<>();
+        newList.add("Description: " + description);
+        newList.add("Deadline: " + deadline);
+        if (tasks.isEmpty()) return newList;
+        newList.add("Tasks: ");
+        for (Task task: tasks) {
+            newList.add("* " + task.getTitle());
+            newList.add("    ** " + task.getDescription());
+        }
+        return newList;
     }
 
     public boolean checkIfProjectIsComplete() {
