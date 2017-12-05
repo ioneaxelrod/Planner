@@ -1,6 +1,9 @@
 package DatabaseInteraction;
 
 import Model.Project;
+import Model.Task;
+
+import java.util.ArrayList;
 
 /**
  * Create, edit, retrieve, or delete Projects in the database.
@@ -41,6 +44,20 @@ public class ProjectDatabaseInteraction {
                 updatedProject.getId());
     }
 
+    public static ArrayList<Project> retrieveAllProjectsInDatabase() {
+        ArrayList<Project> projects = DatabaseInteraction.retrieveProjectsFromDatabase();
+        for (Project project: projects) {
+            addTasksToProject(project);
+        }
+        return projects;
+    }
+
+    private static void addTasksToProject(Project project) {
+        ArrayList<Task> projectTasks = DatabaseInteraction.retrieveProjectTasksFromDatabase(project.getId());
+        project.addSteps(projectTasks);
+    }
+
+
     public synchronized static int incrementAndGet() {
         return ++projectIdIncrementer;
     }
@@ -48,6 +65,8 @@ public class ProjectDatabaseInteraction {
     public synchronized static void setProjectIdOnInit(final int idCount) {
         projectIdIncrementer = idCount;
     }
+
+
 }
 
 

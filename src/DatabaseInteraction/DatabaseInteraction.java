@@ -3,6 +3,7 @@ package DatabaseInteraction;
 import FileReader.FileParser;
 import Model.Project;
 import Model.Task;
+import GUI.MonthView;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -37,7 +38,7 @@ public class DatabaseInteraction {
     }
 
     public static void main(String[] args) {
-        init();
+            init();
     }
 
     //================================================================================
@@ -59,20 +60,22 @@ public class DatabaseInteraction {
 
             retrieveAndSetMaxTaskId();
             retrieveAndSetMaxProjectIdNumber();
+            MonthView window = new MonthView();
+
 
         } catch (SQLException e) {
             System.out.println("Initiating connection failed");
             e.printStackTrace();
-        } finally {
-
-            try {
-                myConn.close();
-            } catch (SQLException e) {
-                System.out.println("Connection failed to close");
-                e.printStackTrace();
-            }
-
-        }
+        } // finally {
+//
+//            try {
+////                myConn.close();
+//            } catch (SQLException e) {
+//                System.out.println("Connection failed to close");
+//                e.printStackTrace();
+//            }
+//
+//        }
     }
 
 
@@ -137,9 +140,27 @@ public class DatabaseInteraction {
     }
 
     public static boolean deleteAllProjectsFromDatabase() {
-        //TODO: implement
+        try {
+            final String query = "delete from projects;";
+            final PreparedStatement preparedStmt = myConn.prepareStatement(query);
+            preparedStmt.execute();
+            return true;
+        } catch (SQLException exc) {
+            exc.printStackTrace();
+            return false;
+        }
+    }
 
-        return false;
+    public static boolean deleteAllTasksFromDatabase() {
+        try {
+            final String query = "delete from tasks;";
+            final PreparedStatement preparedStmt = myConn.prepareStatement(query);
+            preparedStmt.execute();
+            return true;
+        } catch (SQLException exc) {
+            exc.printStackTrace();
+            return false;
+        }
     }
 
     //================================================================================
@@ -302,7 +323,7 @@ public class DatabaseInteraction {
         return tasks;
     }
 
-    public static ArrayList<Task> retrieveAllTasksFromDatabase() {
+    public static ArrayList<Task> retrieveTasksFromDatabase() {
         ArrayList<Task> tasks = new ArrayList<>();
         Task newTask;
 

@@ -2,6 +2,8 @@ package DatabaseInteraction;
 
 import Model.Task;
 
+import java.util.ArrayList;
+
 /**
  * Create, edit, retrieve, or delete Tasks in the database.
  * The engine should directly call this instead of directly interacting /w DatabaseInteraction.
@@ -30,6 +32,14 @@ public class TaskDatabaseInteraction {
 
     public static Task retrieveTaskFromDatabase(final int id) {
         return DatabaseInteraction.retrieveTaskFromDatabase(id);
+    }
+
+    public static ArrayList<Task> retrieveAllTasksFromDatabase() {
+        return DatabaseInteraction.retrieveTasksFromDatabase();
+    }
+
+    public static ArrayList<Task> retrieveAllTasksForProjectFromDatabase(final int projectId) {
+        return DatabaseInteraction.retrieveProjectTasksFromDatabase(projectId);
     }
 
     public static boolean updateTaskInDatabase(final Task updatedTask) {

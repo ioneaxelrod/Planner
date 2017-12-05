@@ -32,7 +32,7 @@ public class TaskDatabaseInteractionTest extends TestCase  {
 
         TaskDatabaseInteraction.deleteTaskFromDatabase(task);
 
-        ArrayList<Task> tasks = DatabaseInteraction.retrieveAllTasksFromDatabase();
+        ArrayList<Task> tasks = DatabaseInteraction.retrieveTasksFromDatabase();
         DatabaseInteraction.printTaskTableToConsole();
 
         for (Task step : tasks) {
@@ -65,7 +65,7 @@ public class TaskDatabaseInteractionTest extends TestCase  {
 
     }
 
-    public void testGetTaskFromDatabase() throws SQLException {
+    public void testRetrieveTaskFromDatabase() throws SQLException {
 
         final Task task = DatabaseInteractionTest.createDummyTask("foo");
         TaskDatabaseInteraction.createTaskInDatabase(task);
@@ -78,4 +78,17 @@ public class TaskDatabaseInteractionTest extends TestCase  {
         assertEquals(task.getTitle(), retrievedTask.getTitle());
 
     }
+
+    //todo: not finished
+//    public void testRetrieveAllTasksFromDatabase() throws SQLException {
+//
+//        ArrayList<Task> allTasks = DatabaseInteraction.retrieveTasksFromDatabase();
+//
+//        while(1) {
+//
+//        }
+//
+//    }
+
+
 }

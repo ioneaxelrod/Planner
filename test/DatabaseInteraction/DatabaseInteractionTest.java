@@ -50,8 +50,7 @@ public final class DatabaseInteractionTest extends TestCase {
                 foo,
                 "slide down hill on wood sticks",
                 LocalDate.of(2016, 1, 16),
-                3,
-                563); //<use the incrementer here
+                3, 563); //<use the incrementer here
     }
 
     public static Task createDummyTask(String foo) {
@@ -189,13 +188,107 @@ public final class DatabaseInteractionTest extends TestCase {
         final Project foo = DatabaseInteractionTest.createDummyProject("foo");
         final Task bar = DatabaseInteractionTest.createDummyTask("bar");
         final Task blah = DatabaseInteractionTest.createDummyTask("blah");
+
+        DatabaseInteraction.addTableRowIntoDatabase(foo.getId(), projectsTableName);
+        DatabaseInteraction.updateProjectInDatabase(foo.getTitle(),
+                foo.getDescription(),
+                foo.getDeadline(),
+                foo.isFinished,
+                foo.getPriority(),
+                foo.getId());
+        DatabaseInteraction.addTableRowIntoDatabase(bar.getId(), tasksTableName);
+        DatabaseInteraction.updateTaskInDatabase(bar.getTitle(),
+                bar.getDescription(),
+                bar.isFinished,
+                bar.getProjectId(),
+                bar.getId());
+        DatabaseInteraction.addTableRowIntoDatabase(blah.getId(), tasksTableName);
+        DatabaseInteraction.updateTaskInDatabase(blah.getTitle(),
+                blah.getDescription(),
+                blah.isFinished,
+                blah.getProjectId(),
+                blah.getId());
+
         DatabaseInteraction.printProjectTableToConsole();
         DatabaseInteraction.printTaskTableToConsole();
 
         DatabaseInteraction.deleteAllTasksForProjectFromDatabase(foo.getId());
+        DatabaseInteraction.deleteTableRowFromDatabase(foo.getId(), projectsTableName);
 
         DatabaseInteraction.printProjectTableToConsole();
         DatabaseInteraction.printTaskTableToConsole();
+
+        final ArrayList<Task> tasks = DatabaseInteraction.retrieveTasksFromDatabase();
+        for (final Task task : tasks) {
+            if (task.getTitle() == blah.getTitle()) {
+                assertTrue(false);
+            }
+        }
+    }
+
+    public void testDeleteAllProjectsFromDatabase() throws SQLException {
+
+        ArrayList<Project> allProjects = DatabaseInteraction.retrieveProjectsFromDatabase();
+
+        DatabaseInteraction.printProjectTableToConsole();
+
+        DatabaseInteraction.deleteAllProjectsFromDatabase();
+
+        DatabaseInteraction.printProjectTableToConsole();
+        System.out.println("Only one table should appear above, but two were generated");
+        System.out.println();
+
+        ArrayList<Project> shouldHoldNoProjects = DatabaseInteraction.retrieveProjectsFromDatabase();
+
+        for (Project project: allProjects) {
+            DatabaseInteraction.addTableRowIntoDatabase(project.getId(), projectsTableName);
+            DatabaseInteraction.updateProjectInDatabase(project.getTitle(),
+                    project.getDescription(),
+                    project.getDeadline(),
+                    project.isFinished,
+                    project.getPriority(),
+                    project.getId());
+        }
+
+        DatabaseInteraction.printProjectTableToConsole();
+
+        assertTrue(shouldHoldNoProjects.isEmpty());
+    }
+
+    public void testDeleteAllTasksFromDatabase() throws SQLException{
+
+        ArrayList<Task> allTasks = DatabaseInteraction.retrieveTasksFromDatabase();
+
+        DatabaseInteraction.printTaskTableToConsole();
+
+        DatabaseInteraction.deleteAllTasksFromDatabase();
+
+        DatabaseInteraction.printTaskTableToConsole();
+        System.out.println("Only one table should appear above, but two were generated");
+        System.out.println();
+
+        ArrayList<Task> shouldHoldNoTasks = DatabaseInteraction.retrieveTasksFromDatabase();
+
+        for (Task task: allTasks) {
+            DatabaseInteraction.addTableRowIntoDatabase(task.getId(), tasksTableName);
+            DatabaseInteraction.updateTaskInDatabase(task.getTitle(),
+                    task.getDescription(),
+                    task.isFinished,
+                    task.getProjectId(),
+                    task.getId());
+        }
+
+        DatabaseInteraction.printTaskTableToConsole();
+
+        assertTrue(shouldHoldNoTasks.isEmpty());
+
+
+    }
+
+    public void testPrintProjectsTable() throws SQLException{
+        DatabaseInteraction.printProjectTableToConsole();
+        LocalDate localDate = LocalDate.of(2017, 12, 1);
+
 
     }
 

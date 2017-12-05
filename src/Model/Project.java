@@ -171,6 +171,10 @@ public class Project {
         return true;
     }
 
+    public void addSteps(ArrayList<Task> tasks) {
+        this.tasks = tasks;
+    }
+
 
     public void completeStep(Task task) {
         task.isFinished = true;
