@@ -5,7 +5,6 @@ import DatabaseInteraction.TaskDatabaseInteraction;
 /**
  * Created by Malia on 11/15/17.
  */
-//TODO: Create int IDs for Primary Key
 
 //====================================================================================
 // Model.Task Class

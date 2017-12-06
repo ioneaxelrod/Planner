@@ -21,20 +21,22 @@ public class DayView extends JFrame {
     final private JLabel dateLabel;
     final private GridLayout projectLayout;
 
+    final private JFrame frame;
+
 
     final private int FRAME_WIDTH = 700;
     final private int FRAME_HEIGHT = 1000;
 
 
-    DayView(ArrayList<Project> projects)
-    {
+    DayView(ArrayList<Project> projects, JFrame frame) {
         super();
 
-        date = projects.get(0).getDeadline();
-        projectList = projects;
+        this.date = projects.get(0).getDeadline();
+        this.projectList = projects;
+        this.frame = frame;
         String dateString = "Projects Due " + date.getMonthValue() + "-" + date.getDayOfMonth() + "-" + date.getYear();
 
-        setSize(FRAME_WIDTH,FRAME_HEIGHT);
+        setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setResizable(false);
         dispose();
         setLayout(new BorderLayout());
@@ -55,12 +57,12 @@ public class DayView extends JFrame {
     }
 
     private void addProjectButtons() {
-        for (Project project: projectList) {
+        for (Project project : projectList) {
             final JButton projectButton = new JButton(project.getTitle());
             projectPanel.add(projectButton);
 
             projectButton.addActionListener(e -> {
-                final ProjectView b = new ProjectView(project);
+                final ProjectView b = new ProjectView(project, frame, this);
             });
         }
     }

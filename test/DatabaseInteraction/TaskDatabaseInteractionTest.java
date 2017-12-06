@@ -79,16 +79,4 @@ public class TaskDatabaseInteractionTest extends TestCase  {
 
     }
 
-    //todo: not finished
-//    public void testRetrieveAllTasksFromDatabase() throws SQLException {
-//
-//        ArrayList<Task> allTasks = DatabaseInteraction.retrieveTasksFromDatabase();
-//
-//        while(1) {
-//
-//        }
-//
-//    }
-
-
 }

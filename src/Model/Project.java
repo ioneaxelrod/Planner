@@ -168,7 +168,7 @@ public class Project {
         newList.add("Tasks: ");
         for (Task task: tasks) {
             newList.add("* " + task.getTitle());
-            newList.add("    ** " + task.getDescription());
+            newList.add("" + task.getDescription());
         }
         return newList;
     }

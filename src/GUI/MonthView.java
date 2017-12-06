@@ -9,36 +9,31 @@ import Model.Project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 
 public class MonthView extends JFrame {
 
-    final private JPanel calendarDayOfWeek = new JPanel();
     final private JPanel monthPanels = new JPanel();
     final private JPanel weekNamePanels = new JPanel();
 
-    final private JLabel sun = new JLabel("Sunday");
-    final private JLabel mon = new JLabel("Monday");
-    final private JLabel tue = new JLabel("Tuesday");
-    final private JLabel wed = new JLabel("Wednesday");
-    final private JLabel thur = new JLabel("Thursday");
-    final private JLabel fri = new JLabel("Friday");
-    final private JLabel sat = new JLabel("Saturday");
+    final private JLabel sun = new JLabel("Sunday", SwingConstants.CENTER);
+    final private JLabel mon = new JLabel("Monday", SwingConstants.CENTER);
+    final private JLabel tue = new JLabel("Tuesday", SwingConstants.CENTER);
+    final private JLabel wed = new JLabel("Wednesday", SwingConstants.CENTER);
+    final private JLabel thur = new JLabel("Thursday", SwingConstants.CENTER);
+    final private JLabel fri = new JLabel("Friday", SwingConstants.CENTER);
+    final private JLabel sat = new JLabel("Saturday", SwingConstants.CENTER);
 
     final private int FRAME_WIDTH = 1400;
     final private int FRAME_HEIGHT = 1000;
-
-    //TODO: not final
-    //dayPusher aligns GridLayout to be like a month in a calendar
-    private int dayPusher = 0;
-    private int dayOfMonth = 0;
-
-    private JLabel emptyLabel;
-
     final private GridLayout daysOfWeekLayout = new GridLayout(1, 7);
     final private GridLayout daysOfMonthLayout = new GridLayout(6, 7);
     final private ArrayList<Project> projects = projectsToFillDays();
+    //dayPusher aligns GridLayout to be like a month in a calendar
+    private int dayPusher = 0;
+    private int dayOfMonth = 0;
 
     public MonthView() {
         super("December 2017");
@@ -46,7 +41,7 @@ public class MonthView extends JFrame {
         //Frame Setup
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setResizable(false);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
         //Top Setup
@@ -60,10 +55,18 @@ public class MonthView extends JFrame {
 
         //Bottom Setup
         JButton addButton = new JButton("Add");
-        addButton.addActionListener(e -> new ProjectEditorView());
+        addButton.addActionListener(e -> new ProjectEditorView(this));
         add(addButton, BorderLayout.SOUTH);
 
         setVisible(true);
+    }
+
+    public static void updateFrame(JFrame frame) {
+
+        WindowEvent closingEvent = new WindowEvent(frame, WindowEvent.WINDOW_CLOSING);
+        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closingEvent);
+        MonthView view = new MonthView();
+
     }
 
     private void createTopPanel() {
@@ -77,14 +80,14 @@ public class MonthView extends JFrame {
         weekNamePanels.add(sat);
     }
 
-
     private ArrayList<Project> projectsToFillDays() {
         return ProjectDatabaseInteraction.retrieveAllProjectsInDatabase();
     }
 
     private ArrayList<Project> findProjectWhoseDeadlineIsThisDay(int dayOfMonth) {
-        ArrayList<Project> projectsWithDeadline = new ArrayList<>();
-        for (Project project: projects) {
+        ArrayList<Project> allProjects = projectsToFillDays();
+        ArrayList<Project> projectsWithDeadline = new ArrayList<Project>();
+        for (Project project : projects) {
             if (project.getDeadline().getDayOfMonth() == dayOfMonth) {
                 projectsWithDeadline.add(project);
             }
@@ -96,24 +99,27 @@ public class MonthView extends JFrame {
         for (int row = 0; row < daysOfMonthLayout.getRows(); row++) {
             for (int col = 0; col < daysOfMonthLayout.getColumns(); col++) {
                 if (dayPusher < 5 || dayPusher > 35) {
-                    dayPusher +=1;
-                    emptyLabel = new JLabel("");
+                    dayPusher += 1;
+                    final JLabel emptyLabel = new JLabel("");
                     monthPanels.add(emptyLabel);
-                }
-                else {
-                    dayPusher +=1;
-                    dayOfMonth +=1;
+                } else {
+                    dayPusher += 1;
+                    dayOfMonth += 1;
 
-                    String dateHeader = dayOfMonth + "\n";
+                    String dateHeader = "" + dayOfMonth;
 
-                    JButton dayButton = new JButton(dateHeader);
-
-                    dayButton.addActionListener(e -> {
-                        final ArrayList<Project> testAttempt = projectsToFillDays();
-                        final DayView b = new DayView(testAttempt);
-                    });
-
-                    monthPanels.add(dayButton);
+                    if (findProjectWhoseDeadlineIsThisDay(dayOfMonth).isEmpty()) {
+                        JLabel dayLabel = new JLabel(dateHeader, SwingConstants.CENTER);
+                        monthPanels.add(dayLabel);
+                    } else {
+                        JButton dayButton = new JButton(dateHeader);
+                        dayButton.addActionListener(e -> {
+                            final int buttonDay = Integer.parseInt(dayButton.getText());
+                            final ArrayList<Project> testAttempt = findProjectWhoseDeadlineIsThisDay(buttonDay);
+                            final DayView b = new DayView(testAttempt, this);
+                        });
+                        monthPanels.add(dayButton);
+                    }
                 }
             }
         }

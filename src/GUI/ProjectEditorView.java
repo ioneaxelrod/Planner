@@ -5,6 +5,7 @@ import DatabaseInteraction.ProjectDatabaseInteraction;
 import DatabaseInteraction.TaskDatabaseInteraction;
 import Model.Project;
 import Model.Task;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
@@ -35,12 +36,15 @@ public class ProjectEditorView extends JFrame {
     final private JTextField taskField3;
     final private JTextField taskField4;
 
-    ProjectEditorView() {
-        setSize(FRAME_WIDTH,FRAME_HEIGHT);
+    final private JFrame frame;
+
+    ProjectEditorView(JFrame frame) {
+        setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setResizable(false);
         dispose();
         setLayout(new BorderLayout());
         setVisible(true);
+        this.frame = frame;
 
         topPanel = new JPanel();
         centerPanel = new JPanel();
@@ -104,13 +108,15 @@ public class ProjectEditorView extends JFrame {
 
     private void saveInformation() {
 
-        Project newProject = consolidateUserInputForProject();
-        ArrayList<Task> newTasks = consolidateUserInputForTasks(newProject.getId());
+        final Project newProject = consolidateUserInputForProject();
+        final ArrayList<Task> newTasks = consolidateUserInputForTasks(newProject.getId());
 
         ProjectDatabaseInteraction.createProjectInDatabase(newProject);
-        for (Task task: newTasks) {
+        for (Task task : newTasks) {
             TaskDatabaseInteraction.createTaskInDatabase(task);
         }
+        MonthView.updateFrame(frame);
+        dispose();
         try {
             DatabaseInteraction.printProjectTableToConsole();
             DatabaseInteraction.printTaskTableToConsole();
@@ -120,43 +126,43 @@ public class ProjectEditorView extends JFrame {
     }
 
     private Project consolidateUserInputForProject() {
-        String title = titleField.getText();
-        String description = descriptionField.getText();
+        final String title = titleField.getText();
+        final String description = descriptionField.getText();
 
-        String deadlineYearString = deadlineYearField.getText();
-        String deadlineMonthString = deadlineMonthField.getText();
-        String deadlineDayString = deadlineDayField.getText();
-        LocalDate deadline = convertDeadlineToLocalDate(deadlineYearString, deadlineMonthString, deadlineDayString);
+        final String deadlineYearString = deadlineYearField.getText();
+        final String deadlineMonthString = deadlineMonthField.getText();
+        final String deadlineDayString = deadlineDayField.getText();
+        final LocalDate deadline = convertDeadlineToLocalDate(deadlineYearString, deadlineMonthString, deadlineDayString);
 
-        String priorityString = priorityField.getText();
-        int priority = Integer.parseInt(priorityString);
+        final String priorityString = priorityField.getText();
+        final int priority = Integer.parseInt(priorityString);
 
         return new Project(title, description, deadline, priority);
     }
 
     private ArrayList<Task> consolidateUserInputForTasks(final int newProjectId) {
 
-        String task1String = taskField1.getText();
-        String task2String = taskField2.getText();
-        String task3String = taskField3.getText();
-        String task4String = taskField4.getText();
+        final String task1String = taskField1.getText();
+        final String task2String = taskField2.getText();
+        final String task3String = taskField3.getText();
+        final String task4String = taskField4.getText();
 
         ArrayList<Task> newTasks = new ArrayList<>();
 
         if (task1String != "" || task1String != null) {
-            Task task1 = new Task(task1String, newProjectId);
+            final Task task1 = new Task(task1String, newProjectId);
             newTasks.add(task1);
         }
         if (task2String != "" || task2String != null) {
-            Task task2 = new Task(task2String, newProjectId);
+            final Task task2 = new Task(task2String, newProjectId);
             newTasks.add(task2);
         }
         if (task3String != "" || task3String != null) {
-            Task task3 = new Task(task3String, newProjectId);
+            final Task task3 = new Task(task3String, newProjectId);
             newTasks.add(task3);
         }
         if (task4String != "" || task4String != null) {
-            Task task4 = new Task(task4String, newProjectId);
+            final Task task4 = new Task(task4String, newProjectId);
             newTasks.add(task4);
         }
 
