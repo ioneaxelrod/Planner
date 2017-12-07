@@ -24,8 +24,8 @@ public class DayView extends JFrame {
     final private JFrame frame;
 
 
-    final private int FRAME_WIDTH = 700;
-    final private int FRAME_HEIGHT = 1000;
+    final private int FRAME_WIDTH = 400;
+    final private int FRAME_HEIGHT = 400;
 
 
     DayView(ArrayList<Project> projects, JFrame frame) {

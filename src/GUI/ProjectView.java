@@ -49,6 +49,7 @@ public class ProjectView extends JFrame {
         }
 
         final JList projectList = new JList(listModel);
+        projectList.setPreferredSize(new Dimension(400,400));
 
         projectPanel.add(projectList);
 
