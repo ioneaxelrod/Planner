@@ -55,7 +55,7 @@ public class DatabaseInteraction {
 
         try {
             // Connection
-            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/foo", "root", "datab4se");
+            get();
             printProjectTableToConsole();
 
             retrieveAndSetMaxTaskId();
